@@ -4,11 +4,11 @@
 %  for slower traveling speeds (focusing only on accuracy of the quad's 
 %  traveled path rather than a complete match of (x,z,t) trajectory points)
 % 
-%  NOTE: Ensure this script is located in the same directory as the folder:
-%  'Model configuration files' so the data saves to the correct location.
+%  NOTE: Ensure this script is located in the correct directory so uisave
+%  is to the correct location, namely 'Model configuration files'
 %  
 % written by Ethan Marcello based on 'Path_Construction_Demo_Script.m'
-% last update 31OCT19
+% last update 02DEC19
 
 %% Generate path
 clear path
@@ -27,5 +27,5 @@ path.y = timeseries(Y,t);
 path.z = timeseries(Z,t);
 path.psi = timeseries(Psi,t);
 path.name = 'Hummingbird Trajectory ' + string(sp_red) + 'x Speed Reduction';
-uisave('path','Model configuration files/humm_traj_path_slow' + string(sp_red) + 'x');
+uisave('path','../Model configuration files/humm_traj_path_slow' + string(sp_red) + 'x');
 clear X Y Z t Psi sp_red raw_t hummTraj

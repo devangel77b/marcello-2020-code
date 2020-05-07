@@ -12,6 +12,9 @@
 % written by Ethan Marcello
 % last updated 31OCT19
 
+%% Important display parameters:
+ss = 3; %data display step size (larger number will display less data points)
+
 %% 2D Trajectory import and data manipulation (time independent)
 
 theta = yout(:,5); %pitch information
@@ -45,10 +48,10 @@ while(yout(endi,25) ~= yout((endi+2),25))
 end
 
 hold on;
-plot(X(index:endi),Z(index:endi),'bo','LineWidth',1.5); %state data X,Z
-plot(X_cmd((index-1):endi),Z_cmd((index-1):endi),'r+','LineWidth',1.5); %commands data X,Z
+plot(X(index:ss:endi),Z(index:ss:endi),'bo','LineWidth',1.5); %state data X,Z
+plot(X_cmd((index-1):ss:(endi-1)),Z_cmd((index-1):ss:(endi-1)),'r+','LineWidth',1.5); %commands data X,Z
 %plot(hummTraj(:,2),hummTraj(:,3)+1,'c*','LineWidth',1.5); %actual hummingbird data (adds one to the Z coordinate to match sim height)
-ax.DataAspectRatio = [1 1 1];
+ax.DataAspectRatio = [1 1 1]; %equalizes scale on xy axis
 grid on;
 
 %Add thrust vectors using "quiver" function
@@ -72,6 +75,10 @@ yl = ylabel('Z (m)','FontSize',16);
 
 %% Error Calculations
 
-n = size(X); %sample size of data for normalization
-avg = mean(sqrt(X-X_cmd))
+xerr = X(index:endi)-X_cmd((index-1):(endi-1)); %errors in X over entire path
+zerr = Z(index:endi)-Z_cmd((index-1):(endi-1)); %errors in Z over entire path
+err_2D = sqrt(xerr.^2+zerr.^2); %2D distance errors over the entire path
+avgerr_2D = mean(err_2D);
+stderr_2D = std(err_2D); %std deviation of errors
+maxerr_2D = max(err_2D);
 
